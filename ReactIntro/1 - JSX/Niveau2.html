@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8"/>
+    <title>Hello React</title>
+    <!-- Library -->
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+
+    <!-- babel => compilation du JSX -->
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <style>
+        .heading {
+            color: purple;
+        }
+    </style>
+</head>
+
+<body>
+<div id="root"></div>
+<script type="text/babel">
+
+  // Création de composant en créant des classes
+  class Hello extends React.Component {
+
+    render() {
+      // lecture seule pour les props
+      // this.props.message = "Hello React";
+
+      const notes = [0, 4, 10, 20, 15];
+      const listeNotes = notes.map((note, index ) => <li key={index} >{notes}</li> );
+        //  const listeNotes = notes.map(function (note, index) {
+        //  return <li className="uneclasse" key={index}> {note}</li>;
+        // });
+
+      const personne = {
+        firstname: "Boulette",
+        lastname: "Fromage",
+        age: 15,
+      };
+
+      const actionsList = (
+        <div>
+            <button>Modifier</button>
+            <button>Annuler</button>
+        </div>
+      );
+
+      return (
+        <div className="heading">
+          <h1>{this.props.message}</h1>
+          <p>{this.props.subtitle}</p>
+          <div>
+              <p>
+                Afficher le contenu du tableau notes sous forme de liste
+                <a href="https://fr.reactjs.org/docs/lists-and-keys.html" className="une classe" >Documentation sur l'affichage des listes</a>
+
+
+              </p>
+              <ul>{listeNotes}</ul>
+
+              <p>Afficher le contenu de la constante personne sous la forme personne.valeur</p>
+              <p>{personne.firstname}</p>
+              <p>{personne.lastname}</p>
+              <p>{personne.age}</p>
+
+              <p>Afficher le contenu de la constante actionsList</p>
+              {actionsList}
+          </div>
+        </div>
+      )
+    }
+  }
+
+  // Rendu dans le DOM
+  ReactDOM.render(
+    <Hello message="Hello React" subtitle="Enjoy ! "/>,
+    document.getElementById('root')
+  );
+</script>
+</body>
+
+</html>

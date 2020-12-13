@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8"/>
+    <title>Hello React</title>
+    <!-- Library -->
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+
+    <!-- babel => compilation du JSX -->
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <style>
+        /*
+        * Mettez le style ici, ou bien chargez-le depuis un fichier style
+        */
+    </style>
+</head>
+
+<body>
+<div id="root"></div>
+<script type="text/babel">
+
+  // App est l'élément qui servira de base pour votre application, c'est son point d'entrée.
+  class App extends React.Component {
+
+    render() {
+      return (
+        <div className="App">
+          {/* Appelez un ou plusieurs composants ici
+          Inclure des images sur lesquels on pourra cliquer
+          Styliser la page avec du css
+          La page doit avoir au moins un élément clickable qui incrémente un compteur
+          Au moins une amélioration qui ajoute passivement des unités au compteur
+          */}
+
+        </div>
+      )
+    }
+  }
+
+  // Rendu dans le DOM
+  ReactDOM.render(
+    <App/>,
+    document.getElementById('root')
+  );
+</script>
+</body>
+
+</html>
