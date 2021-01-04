@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+
+    <!-- babel => compilation du JSX -->
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <style>
+        .heading {
+            color: purple;
+        }
+
+        .principal {
+            background-color: beige;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        class CLock extends React.Component {
+            //le constructor s'execute qu'une seul fois pour chaque instance du composant
+            constructor(props) {
+                super(props);
+                // Déclarer un state qui contient un timer, et ce timer contient la date d'aujourd'hui, new Date
+
+                this.state = {
+                   timer : new Date(),
+                }
+                this.setTime = this.setTime.bind(this);
+
+                console.log(this.state.timer);
+
+                // Créer une interval avec setInterval
+                setInterval(this.setTime, 1000);
+
+                /* Afficher le time de state avec la méthode toLocaleTimeString*/
+
+
+              // La fonction à l'intérieur met le state timer à jour et lui donne la nouvelle valeur de Date
+            }
+
+            render() {
+                return (
+                    <div>
+
+
+                        {this.state.timer.toLocaleTimeString()}
+
+
+                    </div>
+                );
+            }
+            setTime(){
+                console.log("apelle de setTime");
+                this.setState({
+                    timer: new Date(),
+
+                })
+            }
+
+        }
+
+
+
+        class App extends React.Component {
+            render(){
+                return (
+                    <React.Fragment>
+                        <CLock/>
+                        <CLock/>
+                    </React.Fragment>
+                )
+            }
+        }
+
+        ReactDOM.render(
+            <App />,
+            document.getElementById('root')
+        );
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8"/>
+    <title>Hello React</title>
+    <!-- Library -->
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+
+    <!-- babel => compilation du JSX -->
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+</head>
+
+<body>
+<div id="root"></div>
+<script type="text/babel">
+
+  // Création de composant en créant des classes
+  class Hello extends React.Component {
+
+    constructor() {
+      super();
+
+      this.state = {
+        legumes: [
+          {
+            name: "Courgette",
+            draftName: "", // DraftName contient la valeur de l'input destiné à faire changer de nom à l'aliment.
+            prix: 5,
+          },
+          {
+            name: "Popotiron",
+            draftName: "",
+            prix: 155,
+          },
+          {
+            name: "Baba",
+            draftName: "",
+            prix: 99,
+          },
+          {
+            name: "Carotte",
+            draftName: "",
+            prix: 1,
+          }
+        ],
+
+        newVegetableName: "",
+        newVegetablePrice: 0,
+      };
+
+      this.deleteVegetable = this.deleteVegetable.bind(this);
+      this.addVegetable = this.addVegetable.bind(this);
+      this.updateName = this.updateName.bind(this);
+      this.updatePrice = this.updatePrice.bind(this);
+      this.updateField = this.updateField.bind(this);
+    }
+
+    render() {
+      return (
+        <div>
+            <p>Je vous invite à lire ceci : <a href="https://www.robinwieruch.de/react-state-array-add-update-remove">Comment gérer les états avec les tableaux en React</a></p>
+            <ul>
+                <li>Afficher la liste des légumes. Pour chaque légume, afficher son nom et son prix</li>
+                <li>Pour chaque légume, afficher un input de type texte qui prendra comme valeur sa draftName</li>
+                <li>Créer une méthode changeVegetableName, qui prend en paramètre un nouveau nom, et un index de légume à modifier.</li>
+                <li>Pour chaque légume, créer un bouton qui va appeler changeVegetableName en lui envoyant l'index du légume à modifier</li>
+                <li>La méthode changeVegetableName doit pouvoir identifier le légume dont le nom doit changer, mettre à jour son nom et remettre sont draftName à ""</li>
+            </ul>
+            <ul>
+                <li>Créer une méthode deleteVegetable, qui prend en paramètre un index de tableau, et qui supprime cet élément du tableau en mettant le state à jour</li>
+                <li>Pour chaque légume, créer un bouton "supprimer" qui va appeler la méthode deleteVegetable, en lui envoyant comme paramètre l'index du légume</li>
+            </ul>
+            <ul>
+                <li>Créer deux propriétés de state : Une propriété 'newVegetableName' de type String, et une propriété 'newVegetableType' de type String</li>
+                <li>Créer une méthode addVegetable qui va créer un nouveau légume en se basant sur la valeur de ces deux propriétés </li>
+                <li>Créer un petit formulaire composé de deux input, un input pour le nom du légume, et un autre pour le prix du légume. </li>
+                <li>Chaque input doit être lié au state correspondant. L'input pour le nom du légume doit être lié à newVegetableName et l'input pour le type à newVegetableType</li>
+                <li>Créer un bouton qui déclenche la fonction addVegetable</li>
+            </ul>
+            <div>
+                <input name="newVegetableName" type="text" value={this.state.newVegetableName} onChange={this.updateField}/>
+                <input name="newVegetablePrice" type="text" value={this.state.newVegetablePrice} onChange={this.updateField}/>
+                <button onClick={this.addVegetable}>Sauvegarder</button>
+            </div>
+            <div>
+              {this.state.legumes.map((legume, index) => (
+                <div key={index} style={{border: "solid", margin: "8px"}}>
+                    <span>{legume.name} - {legume.prix}</span>
+                    <input type="text" value={legume.draftName} onChange={(event) => this.updateDraftName(index, event)}/>
+                    <p>
+                        <span>Draftname : {legume.draftName}</span>
+                    </p>
+                    <button onClick={() => this.saveVegetable(index)}>Modifier</button>
+                    <button onClick={() => this.deleteVegetable(index)}>Supprimer</button>
+                </div>
+              ))}
+            </div>
+        </div>
+      )
+    }
+
+    /**
+     * Met à jour le state tel que le légume ciblé par l'index change de nom et prend la valeur de son draftname
+     */
+    saveVegetable(index) {
+      // Identifier le légume
+      let legume = this.state.legumes[index];
+
+      // Modifier son nom
+      legume.name = legume.draftName;
+      legume.draftName = "";
+
+      // Mettre à jour le tableau dans la fonction
+      let listeLegumes = this.state.legumes;
+
+      listeLegumes[index] = legume;
+
+      // Mettre à jour le state
+      this.setState({
+        legumes: listeLegumes,
+      })
+    }
+
+    /**
+     * Cette méthode met à jour le draftName du légume ciblé par l'index
+     *
+     */
+    updateDraftName(index, event) {
+      // Identifier le légume à modifier
+      let updatedLegume = this.state.legumes[index];
+
+      // Modifier son draftname
+      updatedLegume.draftName = event.target.value;
+
+      // Récupérer la liste des légumes dans le state et la mettre à jour
+      let legumesList = this.state.legumes;
+      legumesList[index] = updatedLegume;
+
+      // Mettre à jour la liste des légumes dans le state
+
+      this.setState({
+        legumes: legumesList,
+      })
+    }
+
+    /**
+     * Supprimer un légume dans le tableau de légumes à la position index
+     * @param index Number position du légume à supprimer
+     */
+    deleteVegetable(index) {
+      // Récupérer le légume à supprimer dans toDeleteLegume
+      const toDeleteLegume = this.state.legumes[index];
+
+      // Créé un nouveau tableau avec tous les légumes sauf celui qui est égal à toDeleteLegume
+      const newLegumesListe = this.state.legumes.filter(legume => legume !== toDeleteLegume);
+
+      this.setState({
+        legumes: newLegumesListe
+      })
+    }
+
+    /**
+     * Crée un nouveau légume en se basant sur les states et va l'ajouter au tableau des légumes
+     */
+    addVegetable() {
+      const newLegume = {
+        name: this.state.newVegetableName,
+        prix: this.state.newVegetablePrice,
+        draftName: "",
+      };
+
+      const listeLegumes = this.state.legumes;
+      listeLegumes.push(newLegume)
+
+      this.setState({
+        legumes: listeLegumes,
+      })
+
+      // C'est une syntaxe équivalente et plus courte
+      // this.setState({
+      //   legumes: [...this.state.legumes, {
+      //     name: this.state.newVegetableName,
+      //     prix: this.state.newVegetablePrice,
+      //   }]
+      // })
+    }
+
+    /**
+     * Mettre à jour le nom du nouveau légume
+     */
+    updateName(event) {
+      this.setState({
+        newVegetableName: event.target.value
+      })
+    }
+
+    /**
+     * Mettre à jour le prix du nouveau légume
+     */
+    updatePrice(event) {
+      this.setState({
+        newVegetablePrice: event.target.value
+      })
+    }
+
+    updateField(event) {
+      this.setState({
+        [event.target.name]: event.target.value
+      })
+    }
+  }
+
+  // Rendu dans le DOM
+  ReactDOM.render(
+    <Hello/>,
+    document.getElementById('root')
+  );
+</script>
+</body>
+
+</html>

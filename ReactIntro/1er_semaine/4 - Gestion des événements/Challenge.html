@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8"/>
+    <title>Hello React</title>
+    <!-- Library -->
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+
+    <!-- babel => compilation du JSX -->
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+</head>
+
+<body>
+<div id="root"></div>
+<script type="text/babel">
+
+  // Création de composant en créant des classes
+  class Hello extends React.Component {
+
+    constructor() {
+      super();
+
+      this.state = {
+        oiseaux: [
+          {
+            name: "Pingouin",
+            age: 18,
+            color: "Noir",
+            isColorDisplayed: true,
+          },
+          {
+            name: "Manchot",
+            age: 15,
+            color: "Blanc",
+            isColorDisplayed: false,
+          },
+          {
+            name: "Autruche",
+            age: 8555,
+            color: "Blanc",
+            isColorDisplayed: false,
+          },
+          {
+            name: "Colibri",
+            age: 85,
+            color: "Bleu",
+            isColorDisplayed: true,
+          },
+        ],
+          newOiseauName: "",
+          newOiseauColor: "",
+          newOiseauAge : "",
+          newOiseauIsColorDisplayed: true,
+
+      }
+        this.ajoutOiseau = this.ajoutOiseau.bind(this);
+        this.onChangeOiseauName = this.onChangeOiseauName.bind(this);
+        this.onChangeOiseauAge = this.onChangeOiseauAge.bind(this);
+        this.onChangeOiseauColor= this.onChangeOiseauColor.bind(this);
+        this.deleteOiseau = this.deleteOiseau.bind(this);
+        this.onChangeColor = this.onChangeColor.bind(this);
+    }
+
+    render() {
+      return (
+        <div>
+            <ul>
+                <li>Afficher chaque oiseau dans une boucle map</li>
+            </ul>
+            <h2>Pour chaque oiseau</h2>
+            <ul>
+                <li>Afficher son age, son nom, sa couleur</li>
+                <li>Si sa propriété isColorDisplayed n'est pas égale à true, ne pas afficher sa couleur</li>
+            </ul>
+            <ul>
+                <li>Créer un mécanisme qui permette d'ajouter un oiseau en utilisant un formulaire et des states</li>
+                <li>Créer un mécanisme qui permette de supprimer un oiseau en utilisant un bouton supprimer</li>
+                <li>Créer un mécanisme qui permette de modifier la couleur d'un oiseau en utilisant un input texte</li>
+            </ul>
+            <p>Dans le mécanisme d'ajout, ajouter des conditions qui empêchent la sauvegarder de l'oiseau :</p>
+            <ul>
+                <li>Si son nom mesure moins de 4 caractères de long, ou plus de 12 caractères de long, alerter "Veuillez entrer un nom entre 4 et 12 caractères"</li>
+                <li>Si sa couleur n'est ni "bleu", ni "noir", ni "blanc", alerter "Veuillez entrer une de ces trois couleurs : bleu, noir, blanc" </li>
+            </ul>
+            <div>
+                {this.state.oiseaux.map((oiseau, index) =>
+                    <ul key={index}>
+                        <li>name : {oiseau.name}</li>
+                        <li>age  : {oiseau.age} </li>
+
+                        {/* ceci est un if */}
+                        {oiseau.isColorDisplayed &&
+                            <li>color :{oiseau.color}
+
+                                <input type="text"  value={this.state.oiseaux.color}  onChange={this.onChangeColor}/>
+                                <button onClick={this.onChangeColor}>modifier</button>
+
+                            </li>
+
+                        }
+                        <li ><button  onClick={(event) => {
+                            this.deleteOiseau(index);
+                        }
+                        }>supprimer</button></li>
+                    </ul>
+
+                )}
+                <form onSubmit={this.ajoutOiseau}>
+
+                    <label>Name :</label>
+                    <input type="text" value={this.state.oiseaux.name} onChange={this.onChangeOiseauName}/>
+                    <label> age :</label>
+                    <input type="text" value={this.state.oiseaux.age} onChange={this.onChangeOiseauAge}/>
+                    <label>color :</label>
+                    <input type="text" value={this.state.oiseaux.color} onChange={this.onChangeOiseauColor}/>
+
+                    <button>Ajoutez un oiseau</button>
+
+                </form>
+
+            </div>
+
+        </div>
+      )
+    }
+
+    onChangeColor(event){
+        let changeColor =  this.state.oiseaux.color;
+        changeColor.push();
+        this.setState({
+            color : event.target.value
+        })
+    }
+
+    /*
+    * supprimer un oiseau
+    * */
+    deleteOiseau(indexOiseauASupprimer){
+        //tab = tab.filter(item => item !== nbr)
+        //supprimer lelement par son index
+        let oiseaux = this.state.oiseaux.filter(
+            function(oiseau, indexDeCetOiseau){
+                const onDoitGarderCetOiseau = indexDeCetOiseau != indexOiseauASupprimer;
+
+                //index de cet oiseau :  indexDeCetOiseau
+                //index de l'oiseau à supprimer :indexOiseauASupprimer
+               /* on doit garder cette oiseau quand
+               * indexDeCetOiseau est diferrent indexOiseauASupprimer
+               * */
+               /* if(indexDeCetOiseau == indexOiseauASupprimer){
+                    ajoutOiseauAuNouveauTableau();
+                }*/
+
+                return onDoitGarderCetOiseau;
+
+                //return <expression booléenne>
+            }
+        );
+
+        this.setState({
+            oiseaux : oiseaux,
+        })
+    }
+    onChangeOiseauName(event){
+        this.setState({
+            newOiseauName : event.target.value
+        })
+    }
+      onChangeOiseauAge(event){
+        this.setState({
+            newOiseauAge: event.target.value
+      })
+    }
+      onChangeOiseauColor(event){
+        this.setState({
+            newOiseauColor: event.target.value
+      })
+    }
+    ajoutOiseau(event){
+
+        event.preventDefault();
+
+        let newOiseau = {
+            name: this.state.newOiseauName,
+            age: this.state.newOiseauAge,
+            color: this.state.newOiseauColor,
+            isColorDisplayed : this.state.newOiseauIsColorDisplayed
+        };
+        let oiseaux = [...this.state.oiseaux, newOiseau];
+
+        this.setState({
+            oiseaux: oiseaux,
+            name : "",
+            age : "",
+            color : "",
+            isColorDisplayed: true ,
+        })
+    }
+  }
+
+  // Rendu dans le DOM
+  ReactDOM.render(
+    <Hello/>,
+    document.getElementById('root')
+  );
+</script>
+</body>
+
+</html>
